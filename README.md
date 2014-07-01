@@ -4,13 +4,13 @@ emptyset
 A stupid module that makes ∅ an empty set literal
 
 For the 69105th time, the idea of having an empty set literal [arose on
-python-ideas][1].
+python-ideas][emptyset].
 
-  [1]: http://article.gmane.org/gmane.comp.python.ideas/28066
+  [emptyset]: http://article.gmane.org/gmane.comp.python.ideas/28066
 
-[Terry Reedy suggested][2] that the way to do this would be to write a
+[Terry Reedy suggested][pyu] that the way to do this would be to write a
 proprocessor that converted ".pyu" files into ".py" files, but then
-[random832 pointed out][3] that this can't be done as a source conversion,
+[random832 pointed out][random] that this can't be done as a source conversion,
 because the whole problem is that there is no Python source code that
 evaluates to the empty-set literal bytecode. That is, `[]` compiles to
 `BUILD_LIST 0`, `{1}` compiles to `LOAD_CONST 1` then `BUILD_SET 1`, but
@@ -18,15 +18,15 @@ nothing compiles to `BUILD_SET 0`. If you follow the thread from there,
 you'll see increasingly complicated solutions attempting to get around
 that problem.
 
-  [2]: http://article.gmane.org/gmane.comp.python.ideas/28159
-  [3]: http://article.gmane.org/gmane.comp.python.ideas/28200
+  [pyu]: http://article.gmane.org/gmane.comp.python.ideas/28159
+  [random]: http://article.gmane.org/gmane.comp.python.ideas/28200
     
-But, [as I discovered][4], while there is no _source_ that compiles to
+But, [as I discovered][astset], while there is no _source_ that compiles to
 `BUILD_SET 0`, there is a dead-simple _AST_ that compiles to it. And
 it's very easy to hook the import loader to compile everything up to
 the AST, then do something, then finish compiling.
 
-  [4]: http://article.gmane.org/gmane.comp.python.ideas/28234
+  [astset]: http://article.gmane.org/gmane.comp.python.ideas/28234
 
 Just run `emptymain.py`, and it should print out this:
 
@@ -68,12 +68,12 @@ Bugs, hackiness, other caveats
 
 This requires Python 3.4+, because `importlib` didn't work the same
 in 3.3, and didn't exist in 2.7. Similar tricks can be done with
-older versions of the importer; MacroPy[1], Hylang[2], etc. have
+older versions of the importer; [MacroPy][macropy], [Hylang][hy], etc. have
 import hooks for older versions (I think 2.7 and 3.2, respectively,
 but don't quote me on that).
 
-  [1]: https://github.com/lihaoyi/macropy
-  [2]: https://github.com/hylang/hy
+  [macropy]: https://github.com/lihaoyi/macropy
+  [hy]: https://github.com/hylang/hy
 
 As with any import hook, the hook cannot affect your main script, 
 only scripts that are imported after the hook is imported.
