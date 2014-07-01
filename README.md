@@ -63,7 +63,8 @@ Bugs, hackiness, other caveats
 This requires Python 3.4+, because `importlib` didn't work the same
 in 3.3, and didn't exist in 2.7. Similar tricks can be done with
 older versions of the importer; MacroPy[1], Hylang[2], etc. have
-import hooks for older versions.
+import hooks for older versions (I think 2.7 and 3.2, respectively,
+but don't quote me on that).
 
   [1]: https://github.com/lihaoyi/macropy
   [2]: https://github.com/hylang/hy
@@ -81,20 +82,27 @@ future CPythons). So, screw bytes literals. If you want them to
 work, `decode_source` is only a few lines of code, and you
 should be writing it yourself anyway.
 
+Terry's idea was not an import hook that adds the empty set literal
+to all .py files after being installed, but some way to add the
+literal to .pyu files only. This is doable and easy (see the
+Hylang project linked above, which adds a hook for .hy files, 
+while leaving .py files alone), but I haven't done it.
+
 I've never used Python 3.4's `importlib`, and things keep changing 
 from version to version. (I think it's finally stable, but that's
 not much help when I learned on a much earlier version, and I'm
-lazy.) And there aren't any good examples out there. Some of what I 
-did is clearly hacky and the wrong way to do it; if someone actually 
-wanted to use this, they'd want to read the docs and do it right. (The 
-`ast` part of the code should be fine, it's the import hooking that 
-isn't.)
+lazy.) And there aren't any good examples out there. Some of what 
+I  did is clearly hacky and the wrong way to do it; if someone 
+actually  wanted to use this, they'd want to read the docs and do 
+it right. (The  `ast` part of the code should be fine, it's the 
+import hooking that isn't.)
 
-Finally, the whole idea of adding a Unicode empty set literal seems 
-like a bad idea to me, since `set()` is good enough and readable and
-familiar and already working. And, even if you needed an empty set
-literal, the idea that it must compile to an actual empty set literal
-rather than a call to `set` (whether for performance, or because you
-really need to redefine the name `set` but also need set literals)
-makes it even sillier. So, really, consider this whole thing a proof
-of concept, not something you should actually fix and use.
+Finally, the whole idea of adding a Unicode empty set literal 
+seems like a bad idea to me, since `set()` is good enough and 
+readable and familiar and already working. And, even if you 
+needed an empty set literal, the idea that it must compile to an 
+actual empty set literal rather than a call to `set` (whether 
+for performance, or because you really need to redefine the name 
+`set` but also need set literals) makes it even sillier. So, 
+really, consider this whole thing a proof of concept, not 
+something you should actually fix and use.
