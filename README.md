@@ -30,8 +30,14 @@ the AST, then do something, then finish compiling.
 
 Just run `emptymain.py`, and it should print out this:
 
-    set() is the empty set
-  
+    set() is the empty set ∅
+
+(If it fails, or the first part isn't `set()`, then it hasn't
+transformed the `∅` in the source code into a valid empty set
+literal. If the lasst part isn't `∅`, then it's tampered with the
+strings. If both are right, then everything is perfect with the
+world, so go take the rest of the day off.)
+
 Implementation details
 ======================
 
